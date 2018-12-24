@@ -1,0 +1,44 @@
+<resources>
+    <!-- Name for the application [CHAR LIMIT=15] -->
+    <string name="app_name">Music Inventory</string>
+    <!--Name for the Editor_Activity-->
+    <string name="add_instrument">Add Instrument</string>
+    <!-- Titles text for the empty view, which describes how to add instruments [CHAR LIMIT=50]  -->
+    <string name="empty_inventory_1">Your inventory is empty ...</string>
+    <string name="empty_inventory_2">Tap on the \"+\" sign to start adding instruments</string>
+    <!--Label for the general information about an instrument-->
+    <string name="overview">Overview</string>
+    <!--Label for the instrument name-->
+    <string name="instrument">Instrument</string>
+    <!--Label for the instrument name-->
+    <string name="brand">Brand</string>
+    <!--Label for the instrument name-->
+    <string name="serial">Serial</string>
+    <!--Label for the price of the instrument-->
+    <string name="price">Price</string>
+    <!--Label for the image of the instrument-->
+    <string name="photo">Photo</string>
+    <!--Label for the pick Image button -->
+    <string name="pick_image">Choose Image</string>
+    <!--Label to indicate that there is no image selected yet -->
+    <string name="no_image">No image selected</string>
+    <!--Label to indicate that there is no image selected yet -->
+    <string name="yes_image">Image selected successfully</string>
+    <!--Label for the quantity of the instrument-->
+    <string name="quantity">Quantity</string>
+    <!--Label for the general information about a supplier-->
+    <string name="supplier">Supplier</string>
+    <string name="name">Name</string>
+    <!--Label for the Email of the supplier-->
+    <string name="email">Email</string>
+    <!--Label for the Telephone number of the supplier-->
+    <string name="tel">Tel</string>
+    <!--Label to indicate that the user declined camera request permission-->
+    <string name="noCameraPermission">Unable to invoke camera without permission</string>
+    <!--Label to indicate that the picture is saved-->
+    <string name="pictureSaved">Picture Saved</string>
+    <!--Label to indicate that file image is not created-->
+    <string name="noFile">Unable to create image file</string>
+
+
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="350dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="8dp"
+    android:layout_gravity="center">
+    <TextView
+        android:id="@+id/close_txt_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:textColor="@color/blueDark"
+        android:text="X"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:background="@drawable/cercle_background"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Supplier Info"
+        android:textColor="@color/blueDark"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:fontFamily="sans-serif"
+        android:layout_marginBottom="8dp"/>
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:hint="@string/name" />
+
+    <EditText
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:hint="@string/email" />
+
+    <EditText
+        android:id="@+id/edit_tel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:hint="@string/tel" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_alignParentRight="true"/>
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_toLeftOf="@id/save_btn"
+            android:layout_marginRight="16dp"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

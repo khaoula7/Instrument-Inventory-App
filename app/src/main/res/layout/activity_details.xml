@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/guitares" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Violin"
+                    android:textColor="@color/blueDark"
+                    android:textSize="32dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif"
+                    android:text="VS-512"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/textColor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="48dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Yamaha"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/textColor" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/minus_btn"
+                        style="@style/btn_style"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="48dp"
+                        android:background="@drawable/button_style"
+                        android:text="-"
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/qty_txt_view"
+                        style="@style/empty_inventory_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="0" />
+                    <Button
+                        android:id="@+id/plus_btn"
+                        style="@style/btn_style"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/button_style"
+                        android:text="+"
+                        android:textColor="@color/textColor" />
+
+
+
+                </LinearLayout>
+
+                <TextView
+                    style="@style/empty_inventory_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:text="250 TND"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/textColor" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <TextView
+                style="@style/empty_inventory_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="24dp"
+                android:fontFamily="sans-serif"
+                android:text="AliBaba Music Store"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+            <Button
+                android:id="@+id/orderBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_style"
+                android:fontFamily="sans-serif"
+                android:text="ORDER"
+                android:textAppearance="?android:textAppearanceMedium" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
