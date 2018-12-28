@@ -5,62 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <LinearLayout
+    <ListView
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-    <Button
+        android:padding="16dp"/>
+    <RelativeLayout
+        android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dummy Supplier"
-        android:onClick="insertSupplier"
-        android:layout_marginRight="16dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="insertInstrument"
-        android:text="Dummy Instrument"/>
-    <TextView
-        android:id="@+id/supplier_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
-
+        android:layout_centerInParent="true">
         <TextView
-            android:id="@+id/instrument_text_view"
+            android:id="@+id/empty_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_inventory_1"
-        android:layout_above="@id/inventory_image"
-        android:fontFamily="sans-serif"
-        style="@style/empty_inventory_style"
-        android:layout_marginBottom="@dimen/fab_margin"/>
-    <ImageView
-        android:id="@+id/inventory_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/inventory"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:scaleType="centerCrop" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_inventory_2"
-        android:layout_below="@id/inventory_image"
-        style="@style/empty_inventory_style"
-        android:layout_marginTop="@dimen/fab_margin"/>
-
+            android:text="@string/empty_inventory_1"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            style="@style/empty_inventory_style"
+            android:layout_marginBottom="@dimen/fab_margin"/>
+        <ImageView
+            android:id="@+id/inventory_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/inventory"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/empty_text_view"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_inventory_2"
+            android:layout_below="@id/inventory_image"
+            style="@style/empty_inventory_style"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.musicinventory.data.InventContract;
@@ -32,18 +33,30 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        displayDataBaseInfo();
+        //Find ListView which will be populated by instruments
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        //
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
+
     }
 
-    /**
-     * Helper method to display info in database using raw SQL. For testing purposes only.
-     */
+
+
+
+
+
+
+
+
+
+    /**Helper method to display info in database using raw SQL. For testing purposes only.
+
     private void displayDataBaseInfo() {
         //Instanciate our subclass of OpenSQliteHelper to Access database
         InventDbHelper mDbHelper = new InventDbHelper(this);
         // Create and/or open a database to read from it
         SQLiteDatabase db  = mDbHelper.getReadableDatabase();
-        /*Suppliers Table*/
         // Perform this raw SQL query "SELECT * FROM suppliers" to get a Cursor that contains all rows from the pets table.
         Cursor cursor = db.rawQuery("SELECT * FROM " + SupplierEntry.TABLE_NAME, null);
 
@@ -68,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
             // Always close the cursor when you're done reading from it. This releases all its resources and makes it invalid.
             cursor.close();
         }
-        /*Instruments Table*/
         // Perform this raw SQL query "SELECT * FROM instruments" to get a Cursor that contains all rows from the pets table.
         cursor = db.rawQuery("SELECT * FROM " + InstrumentEntry.TABLE_NAME, null);
 
@@ -100,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             // Always close the cursor when you're done reading from it. This releases all its resources and makes it invalid.
             cursor.close();
         }
-    }
+    }*/
 
 
     /**
