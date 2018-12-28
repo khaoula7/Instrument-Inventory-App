@@ -45,7 +45,7 @@ public class InventProvider extends ContentProvider {
     }
 
     /**
-     * Initialize the provider and the database helper object to gain access to the pets database.
+     * Initialize the provider and the database helper object to gain access to the database.
      *
      */
     @Override
@@ -126,6 +126,31 @@ public class InventProvider extends ContentProvider {
     }
 
     private Uri insertInstrument(Uri uri, ContentValues values) {
+        //Check data sanity
+        String instrument = values.getAsString(InstrumentEntry.COLUMN_NAME);
+        if(instrument == null){
+            throw new IllegalArgumentException("Instrument requires a name");
+        }
+        String brand = values.getAsString(InstrumentEntry.COLUMN_BRAND);
+        if(brand == null){
+            throw new IllegalArgumentException("Instrument requires a brand");
+        }
+        String serial = values.getAsString(InstrumentEntry.COLUMN_SERIAL);
+        if(serial == null){
+            throw new IllegalArgumentException("Instrument requires a Serial");
+        }
+        Float price = values.getAsFloat(InstrumentEntry.COLUMN_PRICE);
+        if(price == 0){
+            throw new IllegalArgumentException("Instrument requires a price");
+        }
+        int quantity = values.getAsInteger(InstrumentEntry.COLUMN_NB);
+        if(quantity == 0){
+            throw new IllegalArgumentException("Instrument requires a quantity");
+        }
+        int idSupplier = values.getAsInteger(InstrumentEntry.COLUMN_SUPPLIER_ID);
+        if(idSupplier == 0)
+            Log.i(LOG_TAG, "insertInstrument: Instrument has no valid supplier");
+        //Open database in writable mode
         SQLiteDatabase db = mInventDbHelper.getWritableDatabase();
         long id = db.insert(InstrumentEntry.TABLE_NAME, null, values);
         if(id == -1){
