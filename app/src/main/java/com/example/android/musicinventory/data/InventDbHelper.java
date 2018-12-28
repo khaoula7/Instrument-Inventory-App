@@ -44,6 +44,11 @@ public class InventDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // on upgrade drop older tables
+        db.execSQL("DROP TABLE IF EXISTS " + SupplierEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+ InstrumentEntry.TABLE_NAME);
+        // create new table
+        onCreate(db);
 
     }
 }
