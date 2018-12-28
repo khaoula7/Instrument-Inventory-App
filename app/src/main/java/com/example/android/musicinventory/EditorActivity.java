@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -227,7 +228,7 @@ public class EditorActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String supplier = parent.getItemAtPosition(position).toString();
                 // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "You selected: " + supplier, Toast.LENGTH_LONG).show();
+                //Toast.makeText(parent.getContext(), "You selected: " + supplier, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -353,24 +354,51 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     /**
-     * Save instrument details input by user into instruments and suppliers tables in inventory database
+     * Save instrument details input by user in database
      */
     private void saveInstrument() {
         String instrument = mInstrument.getText().toString().trim();
         String brand = mBrand.getText().toString().trim();
         String serial = mSerial.getText().toString().trim();
-        String price = mPrice.getText().toString().trim();
-        String supplier = mSupplier.getText().toString().trim();
-        String email = mEmail.getText().toString().trim();
-        String tel= mTel.getText().toString().trim();
         int quantity = mQuantity.getValue();
+        String priceString = mPrice.getText().toString().trim();
+        if(TextUtils.isEmpty(instrument) && TextUtils.isEmpty(brand) && TextUtils.isEmpty(serial) &&
+                TextUtils.isEmpty(priceString) && quantity == 0){
+            return;
+        }
+        float price = 0;
+        if(!TextUtils.isEmpty(priceString)){
+            price = Float.parseFloat(priceString);
+        }
+
+        String suppName = mSpinner.getSelectedItem().toString();
+        //A query request to get the id of the selected supplier
+        String [] projection = {SupplierEntry._ID, SupplierEntry.COLUMN_NAME};
+        String selection = SupplierEntry.COLUMN_NAME + "=?";
+        String [] selectionArgs = {suppName};
+        Cursor cursor = getContentResolver().query(SupplierEntry.CONTENT_SUPPLIER_URI, projection, selection, selectionArgs, null);
+        int idSupplier = 0;
+        try {
+            int idColumnIndex = cursor.getColumnIndex(SupplierEntry._ID);
+            //move the cursor to the 0th position, before you start extracting out column values from it
+            if (cursor.moveToFirst()) {
+                idSupplier = cursor.getInt(idColumnIndex);
+            }
+        }finally {
+            cursor.close();
+        }
         ContentValues values = new ContentValues();
         values.put(InstrumentEntry.COLUMN_NAME, instrument);
         values.put(InstrumentEntry.COLUMN_BRAND, brand);
         values.put(InstrumentEntry.COLUMN_SERIAL, serial);
         values.put(InstrumentEntry.COLUMN_PRICE, price);
         values.put(InstrumentEntry.COLUMN_NB, quantity);
-
+        values.put(InstrumentEntry.COLUMN_SUPPLIER_ID, idSupplier);
+        Uri uri = getContentResolver().insert(InstrumentEntry.CONTENT_INSTRUMENT_URI, values);
+        if(uri != null){
+            Toast.makeText(this, "Instrument successfully inserted", Toast.LENGTH_SHORT);
+        }else
+            Toast.makeText(this, "Instrument insertion failed", Toast.LENGTH_SHORT);
     }
 }
 
