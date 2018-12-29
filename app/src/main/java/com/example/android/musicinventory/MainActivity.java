@@ -1,7 +1,10 @@
 package com.example.android.musicinventory;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -17,7 +20,9 @@ import com.example.android.musicinventory.data.InventDbHelper;
 
 import static com.example.android.musicinventory.data.InventContract.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int inventLoader = 0;
+    InventCursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +40,38 @@ public class MainActivity extends AppCompatActivity {
         });
         //Find ListView which will be populated by instruments
         ListView listView = (ListView) findViewById(R.id.list_view);
-        //
+        //Find and set empty view on the ListView, so that it only shows when the ListView has 0 items
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
+        //There is no pet data yet (until the loader finishes) so pass in null for the cursor.
+        cursorAdapter = new InventCursorAdapter(this, null);
+        listView.setAdapter(cursorAdapter);
+        //Initialize and activate loader
+        getLoaderManager().initLoader(inventLoader, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //Define a projection that specifies the columns from the projection we care about.
+        String [] projection = {InstrumentEntry._ID,
+                                InstrumentEntry.COLUMN_NAME,
+                                InstrumentEntry.COLUMN_SERIAL,
+                                InstrumentEntry.COLUMN_NB,
+                                InstrumentEntry.COLUMN_PRICE};
+        return new CursorLoader(this, InstrumentEntry.CONTENT_INSTRUMENT_URI, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        //Update PetCursorAdapter with this new cursor containing updated pet data
+        cursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        //Callback called when the data needs to be deleted
+        cursorAdapter.swapCursor(null);
     }
 
 
@@ -138,5 +171,6 @@ public class MainActivity extends AppCompatActivity {
         values.put(InstrumentEntry.COLUMN_NB, 5);
         Uri newUri = getContentResolver().insert(InstrumentEntry.CONTENT_INSTRUMENT_URI, values);
     }
+
 
 }
