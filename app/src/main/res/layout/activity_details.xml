@@ -30,6 +30,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/nameDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -42,6 +43,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/serialDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -52,6 +54,7 @@
                     android:textColor="@color/textColor" />
 
                 <TextView
+                    android:id="@+id/brandDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -78,13 +81,14 @@
                         android:textColor="@color/textColor" />
 
                     <TextView
-                        android:id="@+id/qty_txt_view"
+                        android:id="@+id/quantityDetails"
                         style="@style/empty_inventory_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:text="0" />
+
                     <Button
                         android:id="@+id/plus_btn"
                         style="@style/btn_style"
@@ -95,10 +99,10 @@
                         android:textColor="@color/textColor" />
 
 
-
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/priceDetails"
                     style="@style/empty_inventory_style"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -106,7 +110,6 @@
                     android:text="250 TND"
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textColor="@color/textColor" />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -119,13 +122,14 @@
 
 
             <TextView
+                android:id="@+id/supplierDetails"
                 style="@style/empty_inventory_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="24dp"
                 android:fontFamily="sans-serif"
-                android:text="AliBaba Music Store"
+                android:text="ALIBABA"
                 android:textAppearance="?android:textAppearanceLarge" />
 
             <Button

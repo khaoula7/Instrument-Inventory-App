@@ -370,7 +370,7 @@ public class EditorActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(priceString)){
             price = Float.parseFloat(priceString);
         }
-
+        //Retrieve selected supplier from Spinner
         String suppName = mSpinner.getSelectedItem().toString();
         //A query request to get the id of the selected supplier
         String [] projection = {SupplierEntry._ID, SupplierEntry.COLUMN_NAME};

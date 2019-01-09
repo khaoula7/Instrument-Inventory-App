@@ -2,6 +2,7 @@ package com.example.android.musicinventory;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +10,25 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.android.musicinventory.data.InventContract;
+import com.example.android.musicinventory.data.InventContract.*;
 
 import org.w3c.dom.Text;
 
 public class InventCursorAdapter extends CursorAdapter {
+    private Context mContext;
+    private static final String LOG_TAG = InventCursorAdapter.class.getSimpleName();
+    private int mId;
 
     public InventCursorAdapter(Context context, Cursor c) {
+
         super(context, c, 0);
+        mContext = context;
     }
     /**
      * Makes a new blank list item view. No data is set (or bound) to the views yet.
+     * @param parent  The parent to which the new view is attached to
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -37,20 +45,22 @@ public class InventCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        ImageView thumbnailImage = (ImageView) view.findViewById(R.id.thumbnail);
-        TextView instrumentTextView = (TextView) view.findViewById(R.id.instrument_txt);
-        TextView serialTextView = (TextView) view.findViewById(R.id.serial_txt);
-        TextView quantityTextView = (TextView) view.findViewById(R.id.quantity_txt);
-        TextView priceTextView = (TextView) view.findViewById(R.id.price_txt);
-        Button saleButton = (Button) view.findViewById(R.id.sale_btn);
+        //ImageView thumbnailImage = (ImageView) view.findViewById(R.id.thumbnail);
+        TextView instrumentTextView = (TextView) view.findViewById(R.id.instrument);
+        TextView serialTextView = (TextView) view.findViewById(R.id.serial);
+        final TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
+        TextView priceTextView = (TextView) view.findViewById(R.id.price);
+        Button saleButton = (Button) view.findViewById(R.id.sale);
 
         //Find the columns of instrument attributes that we are interested in
-        int instrumentColumnIndex = cursor.getColumnIndex(InventContract.InstrumentEntry.COLUMN_NAME);
-        int serialColumnIndex = cursor.getColumnIndex(InventContract.InstrumentEntry.COLUMN_SERIAL);
-        int quantityColumnIndex = cursor.getColumnIndex(InventContract.InstrumentEntry.COLUMN_NB);
-        int priceColumnIndex = cursor.getColumnIndex(InventContract.InstrumentEntry.COLUMN_PRICE);
+        int idColumnIndex = cursor.getColumnIndex(InstrumentEntry._ID);
+        int instrumentColumnIndex = cursor.getColumnIndex(InstrumentEntry.COLUMN_NAME);
+        int serialColumnIndex = cursor.getColumnIndex(InstrumentEntry.COLUMN_SERIAL);
+        int quantityColumnIndex = cursor.getColumnIndex(InstrumentEntry.COLUMN_NB);
+        int priceColumnIndex = cursor.getColumnIndex(InstrumentEntry.COLUMN_PRICE);
 
         //Read the instrument attributes from from the cursor for the current instrument
+        mId = cursor.getInt(idColumnIndex);
         String instrument = cursor.getString(instrumentColumnIndex);
         String serial = cursor.getString(serialColumnIndex);
         int quantity = cursor.getInt(quantityColumnIndex);
@@ -63,6 +73,23 @@ public class InventCursorAdapter extends CursorAdapter {
         serialTextView.setText(serial);
         quantityTextView.setText(quantityString);
         priceTextView.setText(priceString);
+        /*saleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG_TAG, "bindView: id= "+ mId);
+                //Retrieve and Decrease quantity
+                String quantityString = quantityTextView.getText().toString();
+                int quantity = Integer.parseInt(quantityString);
+                if(quantity == 0){
+                    Toast.makeText(mContext, "Quantity Can't be negative", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                quantity--;
+                //Update Database
+                //Retrieve id to build specific row uri
+                //mContext.getContentResolver().update(InstrumentEntry.CONTENT_INSTRUMENT_URI)
+            }
+        });*/
 
     }
 }

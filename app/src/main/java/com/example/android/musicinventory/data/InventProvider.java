@@ -85,8 +85,8 @@ public class InventProvider extends ContentProvider {
                 selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(InstrumentEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
-                default:
-                    throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+            default:
+                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
 
         //Specify the uri to watchIf the data at this URI changes, then we know we need to update the cursor.
@@ -106,7 +106,7 @@ public class InventProvider extends ContentProvider {
                 return insertSupplier(uri, values);
             case INSTRUMENTS:
                 return insertInstrument(uri, values);
-                default:throw new IllegalArgumentException("insertion is not supported for this URI: "+ uri);
+            default:throw new IllegalArgumentException("insertion is not supported for this URI: "+ uri);
         }
     }
 
@@ -176,8 +176,34 @@ public class InventProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch(match){
+            case INSTRUMENTS:
+                return updateQuantity(uri, values, selection, selectionArgs);
+            case INSTRUMENT_ID:
+                selection = InstrumentEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                return updateQuantity(uri, values, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+
+    }
+
+   private int updateQuantity(Uri uri, ContentValues values, String selection, String[] selectionArgs){
+        if(values.size() == 0)
+            return 0;
+        if(values.containsKey(InstrumentEntry.COLUMN_NB)){
+            Integer quantity =  values.getAsInteger(InstrumentEntry.COLUMN_NB);
+        }
+        SQLiteDatabase database = mInventDbHelper.getWritableDatabase();
+        int rows = database.update(InstrumentEntry.TABLE_NAME, values, selection, selectionArgs);
+        if( rows != 0){
+            //Notify all listeners that the data at the given Uri has changed.
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rows;
     }
 
     /**
@@ -188,7 +214,7 @@ public class InventProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri); //match is the code of the content URI
         switch(match){
-           case SUPPLIERS:
+            case SUPPLIERS:
                 return SupplierEntry.CONTENT_LIST_TYPE;
             case SUPPLIER_ID:
                 return SupplierEntry.CONTENT_ITEM_TYPE;
@@ -196,8 +222,8 @@ public class InventProvider extends ContentProvider {
                 return InstrumentEntry.CONTENT_LIST_TYPE;
             case INSTRUMENT_ID:
                 return InstrumentEntry.CONTENT_ITEM_TYPE;
-                default:
-                    throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
     }
 }
