@@ -266,8 +266,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 finish();//Exit Activity
                 return true;
             case R.id.delete:
-                deleteInstrument();
-                finish();
+                showDeleteConfirmationDialog();
+                return true;
             case android.R.id.home:
                 // If quantity hasn't changed, continue with navigating up to parent activity (MainActivity)
                 if(!mQuantityChanged){
@@ -352,10 +352,45 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     /**
+     * Shows an Alert dialog  for the user to confirm deleting the intrument
+     */
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sur you want to delete this Instrument?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteInstrument();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog != null){
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog deleteDialog = builder.create();
+        deleteDialog.show();
+    }
+
+    /**
      * Delete an instrument from database
      */
     private void deleteInstrument() {
-    }
+        if(currentInstUri != null){
+            int rows = getContentResolver().delete(currentInstUri, null, null);
+            if(rows != 0){
+                Toast.makeText(this, "Instrument deleted", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Error with deleting Instrument", Toast.LENGTH_SHORT).show();
+            }
+            //Close Activity
+            finish();
 
+        }
+
+    }
 
 }

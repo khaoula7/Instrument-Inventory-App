@@ -65,7 +65,7 @@ public class InventProvider extends ContentProvider {
         // This cursor will hold the result of the query
         Cursor cursor;
         // Figure out if the URI matcher can match the URI to a specific code
-        int match = sUriMatcher.match(uri);
+        final int match = sUriMatcher.match(uri);
         switch (match){
             case SUPPLIERS: //Perform database query on SUPPLIERS table
                 cursor= database.query(SupplierEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
@@ -100,7 +100,7 @@ public class InventProvider extends ContentProvider {
      */
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        int match = sUriMatcher.match(uri);
+        final int match = sUriMatcher.match(uri);
         switch (match){
             case SUPPLIERS:
                 return insertSupplier(uri, values);
@@ -171,8 +171,27 @@ public class InventProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        SQLiteDatabase database = mInventDbHelper.getWritableDatabase();
+        int rowsDeleted;
+        switch (match){
+            case INSTRUMENTS:
+                rowsDeleted = database.delete(InstrumentEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case INSTRUMENT_ID:
+                selection = InstrumentEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+               rowsDeleted = database.delete(InstrumentEntry.TABLE_NAME, selection, selectionArgs);
+               break;
+               default:
+                    throw new IllegalArgumentException("Delete is not supported for : "+uri);
+        }
+        // If 1 or more rows were deleted, then notify all listeners that the data at the given URI has changed
+        if(rowsDeleted != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override
@@ -209,9 +228,8 @@ public class InventProvider extends ContentProvider {
     /**
      * Returns the MIME type of data for the content URI.
      */
-    @Nullable
     @Override
-    public String getType(@NonNull Uri uri) {
+    public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri); //match is the code of the content URI
         switch(match){
             case SUPPLIERS:
