@@ -1,7 +1,10 @@
 package com.example.android.musicinventory;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +51,7 @@ public class InventCursorAdapter extends CursorAdapter {
         //ImageView thumbnailImage = (ImageView) view.findViewById(R.id.thumbnail);
         TextView instrumentTextView = (TextView) view.findViewById(R.id.instrument);
         TextView serialTextView = (TextView) view.findViewById(R.id.serial);
-        final TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
+        TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
         Button saleButton = (Button) view.findViewById(R.id.sale);
 
@@ -60,10 +63,11 @@ public class InventCursorAdapter extends CursorAdapter {
         int priceColumnIndex = cursor.getColumnIndex(InstrumentEntry.COLUMN_PRICE);
 
         //Read the instrument attributes from from the cursor for the current instrument
-        mId = cursor.getInt(idColumnIndex);
+        final int id = cursor.getInt(idColumnIndex);
+        Log.i(LOG_TAG, "bindView: id= " + id);
         String instrument = cursor.getString(instrumentColumnIndex);
         String serial = cursor.getString(serialColumnIndex);
-        int quantity = cursor.getInt(quantityColumnIndex);
+        final int quantity = cursor.getInt(quantityColumnIndex);
         float price = cursor.getFloat(priceColumnIndex);
         String quantityString = Integer.toString(quantity);
         String priceString = Float.toString(price);
@@ -73,23 +77,34 @@ public class InventCursorAdapter extends CursorAdapter {
         serialTextView.setText(serial);
         quantityTextView.setText(quantityString);
         priceTextView.setText(priceString);
-        /*saleButton.setOnClickListener(new View.OnClickListener() {
+        saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(LOG_TAG, "bindView: id= "+ mId);
+                Log.i(LOG_TAG, "bindView: in onClick id= "+ id + " quantity = "+quantity);
                 //Retrieve and Decrease quantity
-                String quantityString = quantityTextView.getText().toString();
-                int quantity = Integer.parseInt(quantityString);
-                if(quantity == 0){
-                    Toast.makeText(mContext, "Quantity Can't be negative", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                quantity--;
                 //Update Database
+                if(quantity -1 >=0) {
+                    Uri instUri = ContentUris.withAppendedId(InstrumentEntry.CONTENT_INSTRUMENT_URI, id);
+                    Log.i(LOG_TAG, "Uri = " + instUri);
+                    ContentValues values = new ContentValues();
+                    values.put(InstrumentEntry.COLUMN_NB, quantity - 1);
+                    int rowsUpdated = mContext.getContentResolver().update(instUri, values, null, null);
+                    if (rowsUpdated != 0) {
+                        Toast.makeText(mContext, "Quantity updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "Error updating quantity", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(mContext, "Quantity can't be negative", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                //mContext.getContentResolver().update();
                 //Retrieve id to build specific row uri
                 //mContext.getContentResolver().update(InstrumentEntry.CONTENT_INSTRUMENT_URI)
             }
-        });*/
+        });
 
     }
 }
